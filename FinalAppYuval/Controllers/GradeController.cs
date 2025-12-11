@@ -1,4 +1,5 @@
-﻿using FinalAppYuval.Services;
+﻿using FinalAppYuval.Models;
+using FinalAppYuval.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinalAppYuval.Controllers;
@@ -6,37 +7,50 @@ namespace FinalAppYuval.Controllers;
 public class GradeController : Controller
 {
     private readonly IGradeService _gradeService;
-    private readonly ILogger<GradeController> _logger;
 
-    public GradeController(IGradeService gradeService, ILogger<GradeController> logger)
+    public GradeController(IGradeService gradeService)
     {
         _gradeService = gradeService;
-        _logger = logger;
     }
 
     public async Task<IActionResult> Index()
     {
         var students = await _gradeService.GetStudentsAndMarksAsync();
-        
-        if (students == null)
-        {
-            TempData["Error"] = "Failed to load student grades. Please try again later.";
-            return View(new List<StudentGrade>());
-        }
-
-        return View(students);
+        return View(students ?? new List<StudentGrade>());
     }
 
     public async Task<IActionResult> Details(int id)
     {
         var student = await _gradeService.GetStudentByIdAsync(id);
-        
         if (student == null)
-        {
-            TempData["Error"] = $"Student with ID {id} not found.";
             return RedirectToAction(nameof(Index));
-        }
 
         return View(student);
+    }
+
+    public async Task<IActionResult> Summary()
+    {
+        var students = await _gradeService.GetStudentsAndMarksAsync();
+        
+        if (students == null || students.Count == 0)
+        {
+            return View(new GradeSummary
+            {
+                TotalStudents = 0,
+                PassedCount = 0,
+                FailedCount = 0,
+                AverageScore = 0
+            });
+        }
+
+        var summary = new GradeSummary
+        {
+            TotalStudents = students.Count,
+            PassedCount = students.Count(s => s.Status == "Pass"),
+            FailedCount = students.Count(s => s.Status == "Fail"),
+            AverageScore = students.Average(s => s.CalculatedTotal)
+        };
+
+        return View(summary);
     }
 }

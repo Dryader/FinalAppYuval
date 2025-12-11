@@ -21,40 +21,24 @@ public class GradeService : IGradeService
         try
         {
             var apiUrl = _configuration["GradeApi:Url"];
-            
             if (string.IsNullOrEmpty(apiUrl))
             {
-                _logger.LogError("Grade API URL not configured in appsettings");
+                _logger.LogError("Grade API URL not configured");
                 return null;
             }
 
-            _logger.LogInformation($"Fetching students from API: {apiUrl}");
-            
             var response = await _httpClient.GetAsync(apiUrl);
-            
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogError($"API returned status code {response.StatusCode}");
+                _logger.LogError($"API returned {response.StatusCode}");
                 return null;
             }
 
-            var students = await response.Content.ReadAsAsync<List<StudentGrade>>();
-            _logger.LogInformation($"Successfully retrieved {students?.Count ?? 0} students");
-            return students;
-        }
-        catch (HttpRequestException ex)
-        {
-            _logger.LogError($"HTTP request failed: {ex.Message}");
-            return null;
-        }
-        catch (JsonException ex)
-        {
-            _logger.LogError($"Failed to deserialize JSON response: {ex.Message}");
-            return null;
+            return await response.Content.ReadAsAsync<List<StudentGrade>>();
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Unexpected error while fetching students: {ex.Message}");
+            _logger.LogError($"Error fetching students: {ex.Message}");
             return null;
         }
     }
@@ -64,41 +48,24 @@ public class GradeService : IGradeService
         try
         {
             var apiUrl = _configuration["GradeApi:Url"];
-            
             if (string.IsNullOrEmpty(apiUrl))
             {
-                _logger.LogError("Grade API URL not configured in appsettings");
+                _logger.LogError("Grade API URL not configured");
                 return null;
             }
 
-            var fullUrl = $"{apiUrl}/{id}";
-            _logger.LogInformation($"Fetching student from API: {fullUrl}");
-            
-            var response = await _httpClient.GetAsync(fullUrl);
-            
+            var response = await _httpClient.GetAsync($"{apiUrl}/{id}");
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning($"Student with ID {id} not found. API returned status code {response.StatusCode}");
+                _logger.LogWarning($"Student {id} not found");
                 return null;
             }
 
-            var student = await response.Content.ReadAsAsync<StudentGrade>();
-            _logger.LogInformation($"Successfully retrieved student with ID {id}");
-            return student;
-        }
-        catch (HttpRequestException ex)
-        {
-            _logger.LogError($"HTTP request failed: {ex.Message}");
-            return null;
-        }
-        catch (JsonException ex)
-        {
-            _logger.LogError($"Failed to deserialize JSON response: {ex.Message}");
-            return null;
+            return await response.Content.ReadAsAsync<StudentGrade>();
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Unexpected error while fetching student: {ex.Message}");
+            _logger.LogError($"Error fetching student: {ex.Message}");
             return null;
         }
     }

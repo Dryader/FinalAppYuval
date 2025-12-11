@@ -1,0 +1,57 @@
+@model GradeSummary
+
+@{
+    ViewData["Title"] = "Grade Summary";
+}
+
+<div class="container mt-5">
+    <h1>Grade Summary</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <h5>Total Students</h5>
+                    <p class="display-6 fw-bold text-primary">@Model.TotalStudents</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <h5>Passed</h5>
+                    <p class="display-6 fw-bold text-success">@Model.PassedCount</p>
+                    <small>@Model.PassPercentage.ToString("F1")%</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-danger">
+                <div class="card-body text-center">
+                    <h5>Failed</h5>
+                    <p class="display-6 fw-bold text-danger">@Model.FailedCount</p>
+                    <small>@Model.FailPercentage.ToString("F1")%</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-info">
+                <div class="card-body text-center">
+                    <h5>Average Score</h5>
+                    <p class="display-6 fw-bold text-info">@Model.AverageScore.ToString("F2")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a href="@Url.Action("Index")" class="btn btn-secondary">Back to Grades</a>
+        </div>
+    </div>
+</div>
+
+

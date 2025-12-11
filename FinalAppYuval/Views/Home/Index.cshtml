@@ -1,168 +1,168 @@
-﻿@model StudentGrade
-
-@{
-    ViewData["Title"] = "Dashboard";
-}
-
-<div class="container mt-5">
-    <h1 class="mb-4">Dashboard</h1>
-
-    <!-- Month Selector -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <form method="get" class="form-inline">
-                <label class="form-label me-2">Select Month:</label>
-                <input type="month" name="month" class="form-control me-2"
-                       value="@Model.SelectedMonth.Year.ToString("0000")-@Model.SelectedMonth.Month.ToString("00")"/>
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Financial Summary Cards -->
-    <div class="row mb-5">
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Total Income</h5>
-                    <h2>$@Model.TotalIncome.ToString("F2")</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-danger text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Total Expenses</h5>
-                    <h2>$@Model.TotalExpenses.ToString("F2")</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-info text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Current Balance</h5>
-                    <h2>$@Model.CurrentBalance.ToString("F2")</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card @(Model.RemainingBudget >= 0 ? "bg-success" : "bg-warning") text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Remaining Budget</h5>
-                    <h2>$@Model.RemainingBudget.ToString("F2")</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Action Button -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <a href="@Url.Action("Add", "Transaction")" class="btn btn-primary btn-lg">
-                <i class="bi bi-plus"></i> Add Transaction
-            </a>
-        </div>
-    </div>
-
-    <!-- Top Overspent Categories -->
-    @if (Model.TopOverspentCategories.Any())
-    {
-        <div class="row mb-5">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-warning text-dark">
-                        <h5 class="mb-0">Top Overspent Categories</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            @foreach (var category in Model.TopOverspentCategories)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span>@category.Item1</span>
-                                    <span class="badge bg-danger rounded-pill">$@category.Item2.ToString("F2")</span>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
-    <!-- Recent Transactions -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Recent Transactions</h5>
-                </div>
-                <div class="card-body">
-                    @if (Model.RecentTransactions.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach (var transaction in Model.RecentTransactions)
-                                {
-                                    <tr>
-                                        <td>@transaction.Date.ToString("MMM dd, yyyy")</td>
-                                        <td>@transaction.Description</td>
-                                        <td>@transaction.BudgetName</td>
-                                        <td>
-                                            @if (transaction.Type == TransactionType.Income)
-                                            {
-                                                <span class="badge bg-success">Income</span>
-                                            }
-                                            else if (transaction.Type == TransactionType.Expense)
-                                            {
-                                                <span class="badge bg-danger">Expense</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-secondary">Transfer</span>
-                                            }
-                                        </td>
-                                        <td class="@(transaction.Type == TransactionType.Income ? "text-success fw-bold" : "text-danger fw-bold")">
-                                            $@transaction.Amount.ToString("F2")
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("Edit", "Transaction", new { id = transaction.Id })"
-                                               class="btn btn-sm btn-warning">
-                                                Edit
-                                            </a>
-                                            <form method="post" action="@Url.Action("Delete", "Transaction")"
-                                                  style="display: inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@transaction.Id"/>
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                        onclick="return confirm('Are you sure?')">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <p class="text-muted">No transactions found.</p>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+﻿@* @model StudentGrade *@
+@* *@
+@* @{ *@
+@*     ViewData["Title"] = "Dashboard"; *@
+@* } *@
+@* *@
+@* <div class="container mt-5"> *@
+@*     <h1 class="mb-4">Dashboard</h1> *@
+@* *@
+@*     <!-- Month Selector --> *@
+@*     <div class="row mb-4"> *@
+@*         <div class="col-md-12"> *@
+@*             <form method="get" class="form-inline"> *@
+@*                 <label class="form-label me-2">Select Month:</label> *@
+@*                 <input type="month" name="month" class="form-control me-2" *@
+@*                        value="@Model.SelectedMonth.Year.ToString("0000")-@Model.SelectedMonth.Month.ToString("00")"/> *@
+@*                 <button type="submit" class="btn btn-primary">Filter</button> *@
+@*             </form> *@
+@*         </div> *@
+@*     </div> *@
+@* *@
+@*     <!-- Financial Summary Cards --> *@
+@*     <div class="row mb-5"> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card bg-success text-white"> *@
+@*                 <div class="card-body"> *@
+@*                     <h5 class="card-title">Total Income</h5> *@
+@*                     <h2>$@Model.TotalIncome.ToString("F2")</h2> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card bg-danger text-white"> *@
+@*                 <div class="card-body"> *@
+@*                     <h5 class="card-title">Total Expenses</h5> *@
+@*                     <h2>$@Model.TotalExpenses.ToString("F2")</h2> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card bg-info text-white"> *@
+@*                 <div class="card-body"> *@
+@*                     <h5 class="card-title">Current Balance</h5> *@
+@*                     <h2>$@Model.CurrentBalance.ToString("F2")</h2> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-md-3"> *@
+@*             <div class="card @(Model.RemainingBudget >= 0 ? "bg-success" : "bg-warning") text-white"> *@
+@*                 <div class="card-body"> *@
+@*                     <h5 class="card-title">Remaining Budget</h5> *@
+@*                     <h2>$@Model.RemainingBudget.ToString("F2")</h2> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* *@
+@*     <!-- Action Button --> *@
+@*     <div class="row mb-4"> *@
+@*         <div class="col-md-12"> *@
+@*             <a href="@Url.Action("Add", "Transaction")" class="btn btn-primary btn-lg"> *@
+@*                 <i class="bi bi-plus"></i> Add Transaction *@
+@*             </a> *@
+@*         </div> *@
+@*     </div> *@
+@* *@
+@*     <!-- Top Overspent Categories --> *@
+@*     @if (Model.TopOverspentCategories.Any()) *@
+@*     { *@
+@*         <div class="row mb-5"> *@
+@*             <div class="col-md-6"> *@
+@*                 <div class="card"> *@
+@*                     <div class="card-header bg-warning text-dark"> *@
+@*                         <h5 class="mb-0">Top Overspent Categories</h5> *@
+@*                     </div> *@
+@*                     <div class="card-body"> *@
+@*                         <ul class="list-group list-group-flush"> *@
+@*                             @foreach (var category in Model.TopOverspentCategories) *@
+@*                             { *@
+@*                                 <li class="list-group-item d-flex justify-content-between align-items-center"> *@
+@*                                     <span>@category.Item1</span> *@
+@*                                     <span class="badge bg-danger rounded-pill">$@category.Item2.ToString("F2")</span> *@
+@*                                 </li> *@
+@*                             } *@
+@*                         </ul> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     } *@
+@* *@
+@*     <!-- Recent Transactions --> *@
+@*     <div class="row"> *@
+@*         <div class="col-md-12"> *@
+@*             <div class="card"> *@
+@*                 <div class="card-header bg-primary text-white"> *@
+@*                     <h5 class="mb-0">Recent Transactions</h5> *@
+@*                 </div> *@
+@*                 <div class="card-body"> *@
+@*                     @if (Model.RecentTransactions.Any()) *@
+@*                     { *@
+@*                         <div class="table-responsive"> *@
+@*                             <table class="table table-hover"> *@
+@*                                 <thead class="table-light"> *@
+@*                                 <tr> *@
+@*                                     <th>Date</th> *@
+@*                                     <th>Description</th> *@
+@*                                     <th>Category</th> *@
+@*                                     <th>Type</th> *@
+@*                                     <th>Amount</th> *@
+@*                                     <th>Actions</th> *@
+@*                                 </tr> *@
+@*                                 </thead> *@
+@*                                 <tbody> *@
+@*                                 @foreach (var transaction in Model.RecentTransactions) *@
+@*                                 { *@
+@*                                     <tr> *@
+@*                                         <td>@transaction.Date.ToString("MMM dd, yyyy")</td> *@
+@*                                         <td>@transaction.Description</td> *@
+@*                                         <td>@transaction.BudgetName</td> *@
+@*                                         <td> *@
+@*                                             @if (transaction.Type == TransactionType.Income) *@
+@*                                             { *@
+@*                                                 <span class="badge bg-success">Income</span> *@
+@*                                             } *@
+@*                                             else if (transaction.Type == TransactionType.Expense) *@
+@*                                             { *@
+@*                                                 <span class="badge bg-danger">Expense</span> *@
+@*                                             } *@
+@*                                             else *@
+@*                                             { *@
+@*                                                 <span class="badge bg-secondary">Transfer</span> *@
+@*                                             } *@
+@*                                         </td> *@
+@*                                         <td class="@(transaction.Type == TransactionType.Income ? "text-success fw-bold" : "text-danger fw-bold")"> *@
+@*                                             $@transaction.Amount.ToString("F2") *@
+@*                                         </td> *@
+@*                                         <td> *@
+@*                                             <a href="@Url.Action("Edit", "Transaction", new { id = transaction.Id })" *@
+@*                                                class="btn btn-sm btn-warning"> *@
+@*                                                 Edit *@
+@*                                             </a> *@
+@*                                             <form method="post" action="@Url.Action("Delete", "Transaction")" *@
+@*                                                   style="display: inline;"> *@
+@*                                                 @Html.AntiForgeryToken() *@
+@*                                                 <input type="hidden" name="id" value="@transaction.Id"/> *@
+@*                                                 <button type="submit" class="btn btn-sm btn-danger" *@
+@*                                                         onclick="return confirm('Are you sure?')"> *@
+@*                                                     Delete *@
+@*                                                 </button> *@
+@*                                             </form> *@
+@*                                         </td> *@
+@*                                     </tr> *@
+@*                                 } *@
+@*                                 </tbody> *@
+@*                             </table> *@
+@*                         </div> *@
+@*                     } *@
+@*                     else *@
+@*                     { *@
+@*                         <p class="text-muted">No transactions found.</p> *@
+@*                     } *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+@* *@
