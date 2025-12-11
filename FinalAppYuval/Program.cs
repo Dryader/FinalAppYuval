@@ -19,7 +19,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Grade}/{action=Index}/{id?}");
+    "default",
+    "{controller=Grade}/{action=Index}/{id?}");
 
 app.Run();

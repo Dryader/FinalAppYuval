@@ -1,12 +1,11 @@
 using FinalAppYuval.Models;
-using System.Net.Http.Json;
 
 namespace FinalAppYuval.Services;
 
 public class GradeService : IGradeService
 {
-    private readonly HttpClient _httpClient;
     private readonly string _apiUrl = "https://mohameom.dev.fast.sheridanc.on.ca/demo/grades.json";
+    private readonly HttpClient _httpClient;
 
     public GradeService(HttpClient httpClient)
     {
@@ -28,11 +27,4 @@ public class GradeService : IGradeService
             return null;
         }
     }
-
-    public async Task<StudentGrade?> GetStudentByIdAsync(int id)
-    {
-        var students = await GetStudentsAndMarksAsync();
-        return students?.FirstOrDefault(s => s.Id == id);
-    }
 }
-

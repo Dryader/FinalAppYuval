@@ -19,21 +19,12 @@ public class GradeController : Controller
         return View(students ?? new List<StudentGrade>());
     }
 
-    public async Task<IActionResult> Details(int id)
-    {
-        var student = await _gradeService.GetStudentByIdAsync(id);
-        if (student == null)
-            return RedirectToAction(nameof(Index));
-
-        return View(student);
-    }
 
     public async Task<IActionResult> Summary()
     {
         var students = await _gradeService.GetStudentsAndMarksAsync();
-        
+
         if (students == null || students.Count == 0)
-        {
             return View(new GradeSummary
             {
                 TotalStudents = 0,
@@ -41,7 +32,6 @@ public class GradeController : Controller
                 FailedCount = 0,
                 AverageScore = 0
             });
-        }
 
         var summary = new GradeSummary
         {
