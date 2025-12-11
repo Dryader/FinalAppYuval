@@ -1,0 +1,113 @@
+@model StudentGrade
+
+@{
+    ViewData["Title"] = "Student Grade Details";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>@Model.Name - Grade Details</h1>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Student ID</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Id
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Name
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Assignment 1</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Assignment1
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Assignment 2</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Assignment2
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Midterm</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Midterm
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Final</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Final
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Total Score</h6>
+                        </div>
+                        <div class="col-sm-9">
+                            <h5><strong>@Model.CalculatedTotal</strong></h5>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Status</h6>
+                        </div>
+                        <div class="col-sm-9">
+                            @if (Model.Status == "Pass")
+                            {
+                                <span class="badge bg-success" style="font-size: 1em; padding: 0.5em 1em;">@Model.Status</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger" style="font-size: 1em; padding: 0.5em 1em;">@Model.Status</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-12">
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
