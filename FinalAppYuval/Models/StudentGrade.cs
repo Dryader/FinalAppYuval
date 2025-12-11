@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FinalAppYuval.Models;
+﻿namespace FinalAppYuval.Models;
 
 public class StudentGrade
 {
-    [Key] public int Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public int Assignment1 { get; set; }
     public int Assignment2 { get; set; }

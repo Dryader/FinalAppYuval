@@ -10,4 +10,8 @@
       <Folder Include="Controllers\API\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Summary\Summary.cshtml" />
+    </ItemGroup>
+
 </Project>
